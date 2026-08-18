@@ -1,0 +1,9 @@
+{
+  "name": "octane-playground",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@octanejs/vite-plugin": "latest",
+    "octane": "latest"
+  }
+}
