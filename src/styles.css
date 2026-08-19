@@ -55,7 +55,7 @@ body {
 .page {
 	flex: 1;
 	display: grid;
-	align-content: center;
+	align-content: start;
 	padding: 2rem 1.25rem;
 }
 
