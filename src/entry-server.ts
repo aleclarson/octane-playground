@@ -2,6 +2,7 @@ import { renderToString } from 'octane/server';
 import { prerender } from 'octane/static';
 import { SsgPage } from './SsgPage.tsrx';
 import { SsrPage } from './SsrPage.tsrx';
+import globalStyles from './styles.css?raw';
 
 function addRenderedBody(template: string, body: string, css: string) {
 	const root = '<div id="root"></div>';
@@ -22,6 +23,7 @@ function staticDocument(body: string, css: string) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Octane route modes</title>
+    <style>${globalStyles}</style>
     ${css}
   </head>
   <body>

@@ -22,19 +22,19 @@ export function App() @{
 	};
 
 	<main class="page" data-route={currentRoute.path} data-render-mode="spa">
-		<nav class="route-nav" aria-label="SPA routes">
-			@for (const route of spaRoutes; key route.path) {
-				<a
-					class={route.path === currentRoute.path ? 'active' : ''}
-					href={route.path}
-					onClick={(event) => navigate(event, route.path)}
-				>
-					{route.label as string}
-				</a>
-			}
-		</nav>
-
 		<section class="content">
+			<nav class="route-nav" aria-label="SPA routes">
+				@for (const route of spaRoutes; key route.path) {
+					<a
+						class={route.path === currentRoute.path ? 'active' : ''}
+						href={route.path}
+						onClick={(event) => navigate(event, route.path)}
+					>
+						{route.label as string}
+					</a>
+				}
+			</nav>
+
 			<p class="eyebrow">Octane Vite playground</p>
 			<h1>{currentRoute.label as string}</h1>
 			<p>

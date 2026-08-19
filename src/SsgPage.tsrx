@@ -8,14 +8,5 @@ export function SsgPage() @{
 				the production build and served without a client entry.
 			</p>
 		</section>
-
-		<style>
-			code {
-				padding: 0.15rem 0.35rem;
-				border-radius: 0.35rem;
-				background: #e2e8f0;
-				font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-			}
-		</style>
 	</main>
 }
