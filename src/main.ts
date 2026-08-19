@@ -1,5 +1,4 @@
 import { createRoot, hydrateRoot } from 'octane';
-import { matchRoute } from 'flamefront';
 import { App } from './App.tsrx';
 import { SsrPage } from './SsrPage.tsrx';
 import { app } from './routes.ts';
@@ -11,7 +10,7 @@ if (!root) {
 	throw new Error('Octane route shell is missing #root.');
 }
 
-const routeMatch = matchRoute(app.routes, window.location.pathname);
+const routeMatch = app.match(window.location.pathname);
 
 if (routeMatch?.data.render === 'ssr') {
 	hydrateRoot(root, SsrPage);
