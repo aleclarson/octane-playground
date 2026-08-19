@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'octane';
+import { matchRoute } from 'flamefront';
 import { navigationFor } from './navigation.ts';
 import { app } from './routes.ts';
 import { RouteHeader } from './RouteHeader.tsrx';
@@ -6,12 +7,12 @@ import { RouteHeader } from './RouteHeader.tsrx';
 const spaRoutes = app.routes.filter((route) => route.render === 'spa');
 
 function normalizePath(pathname: string) {
-	return spaRoutes.some((route) => route.path === pathname) ? pathname : spaRoutes[0]?.path ?? '/';
+	return matchRoute(spaRoutes, pathname) ? pathname : spaRoutes[0]?.path ?? '/';
 }
 
 export function App() @{
 	const [path, setPath] = useState(() => normalizePath(window.location.pathname));
-	const currentRoute = spaRoutes.find((route) => route.path === path) ?? spaRoutes[0];
+	const currentRoute = matchRoute(spaRoutes, path)?.data ?? spaRoutes[0];
 	const currentNavigation = navigationFor(currentRoute.path);
 
 	useEffect(() => {
