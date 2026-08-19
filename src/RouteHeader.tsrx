@@ -1,4 +1,5 @@
 import { routes } from './routes.ts';
+import { navigation } from './navigation.ts';
 
 type RouteHeaderProps = {
 	activePath: string;
@@ -13,13 +14,13 @@ export function RouteHeader({ activePath, onNavigate }: RouteHeaderProps) @{
 
 	<header class="site-header">
 		<nav class="site-nav" aria-label="All routes">
-			@for (const route of routes; key route.path) {
+			@for (const item of navigation; key item.path) {
 				<a
-					class={route.path === activePath ? 'active' : ''}
-					href={route.path}
-					onClick={(event) => handleClick(event, route.path)}
+					class={item.path === activePath ? 'active' : ''}
+					href={item.path}
+					onClick={(event) => handleClick(event, item.path)}
 				>
-					{route.navLabel as string}
+					{item.label}
 				</a>
 			}
 		</nav>

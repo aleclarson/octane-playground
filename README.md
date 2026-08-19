@@ -5,8 +5,10 @@ integration. It demonstrates four distinct routes:
 
 The explicit route graph lives in [`src/routes.ts`](src/routes.ts). It is the first
 consumer of the local `flamefront` package, which currently provides the
-manifest primitives and the `ff routes` inspector. The existing scripts remain
-the thin adapter around Octane's current Vite capabilities.
+behavioral manifest primitives and the `ff routes` inspector. App-specific
+navigation labels and page titles live separately in [`src/navigation.ts`](src/navigation.ts).
+The existing scripts remain the thin adapter around Octane's current Vite
+capabilities.
 
 - `/ssr` renders `SsrPage` on the server and uses `<Hydrate>` with an
   interaction strategy for its deferred panel.
@@ -31,6 +33,9 @@ pnpm preview
 pnpm check:routes
 pnpm exec ff routes
 ```
+
+`ff routes` reports each route's path, render mode, and hydration setting; it
+does not require presentation metadata in the framework manifest.
 
 `check:routes` proves the server-side distinctions. In a browser, open `/ssr`,
 confirm its label is in the initial document, then click the deferred button;

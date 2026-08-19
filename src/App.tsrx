@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'octane';
+import { navigationFor } from './navigation.ts';
 import { spaRoutes } from './routes.ts';
 import { RouteHeader } from './RouteHeader.tsrx';
 
@@ -9,6 +10,7 @@ function normalizePath(pathname: string) {
 export function App() @{
 	const [path, setPath] = useState(() => normalizePath(window.location.pathname));
 	const currentRoute = spaRoutes.find((route) => route.path === path) ?? spaRoutes[0];
+	const currentNavigation = navigationFor(currentRoute.path);
 
 	useEffect(() => {
 		const handlePopState = () => setPath(normalizePath(window.location.pathname));
@@ -27,7 +29,7 @@ export function App() @{
 		<main class="page" data-route={currentRoute.path} data-render-mode={currentRoute.render}>
 			<section class="content">
 				<p class="eyebrow">Octane Vite playground</p>
-				<h1>{currentRoute.label as string}</h1>
+				<h1>{currentNavigation?.pageTitle ?? currentRoute.path}</h1>
 				<p>
 					This label is rendered by the browser-only Octane app. Use the header to
 					switch between routes.
