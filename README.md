@@ -19,10 +19,9 @@ inspector. App-specific navigation labels and page titles remain separate in
   routes. SPA links stay client-side; SSR and SSG links perform normal document
   navigation.
 
-The published Vite app layer currently treats every `RenderRoute` as SSR and
-does not have a per-route SSG/SPA mode field. This project therefore keeps the
-official `octane()` plugin for `.tsrx` compilation and uses the small scripts in
-`scripts/` to make the four requested modes explicit.
+Flamefront supplies the render-mode lifecycle around Octane's Vite compiler.
+Its route manifest drives the shared Remix Router graph, SSR dispatch, SSG
+output, and SPA fallback without a filesystem routing convention.
 
 ```sh
 pnpm dev
