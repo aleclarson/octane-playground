@@ -1,10 +1,22 @@
 import { renderToString } from 'octane/server';
 import { prerender } from 'octane/static';
-import { SsgPage } from './SsgPage.tsrx';
-import { SsrPage } from './SsrPage.tsrx';
+import { loadRoute, type RouteModule } from 'flamefront/server';
+import { app } from './routes.ts';
 import globalStyles from './styles.css?raw';
 
-function addRenderedBody(template: string, body: string, css: string) {
+const routeModules = import.meta.glob('/src/*.tsrx');
+
+async function importRoute(entry: string): Promise<RouteModule> {
+	const importModule = routeModules[entry];
+	if (!importModule) throw new Error(`No Vite route module was generated for ${entry}.`);
+	return importModule() as Promise<RouteModule>;
+}
+
+function serializeLoaderData(loaderData: unknown) {
+	return JSON.stringify(loaderData ?? null).replaceAll('<', '\\u003c');
+}
+
+function addRenderedBody(template: string, body: string, css: string, loaderData: unknown) {
 	const root = '<div id="root"></div>';
 
 	if (!template.includes(root)) {
@@ -13,7 +25,10 @@ function addRenderedBody(template: string, body: string, css: string) {
 
 	return template
 		.replace(root, `<div id="root">${body}</div>`)
-		.replace('</head>', `${css}</head>`);
+		.replace(
+			'</head>',
+			`${css}<script id="flamefront-loader-data" type="application/json">${serializeLoaderData(loaderData)}</script></head>`,
+		);
 }
 
 function staticDocument(body: string, css: string) {
@@ -33,12 +48,34 @@ function staticDocument(body: string, css: string) {
 `;
 }
 
-export function renderSsrDocument(template: string) {
-	const { html, css } = renderToString(SsrPage);
-	return addRenderedBody(template, html, css);
+export async function renderSsrDocument(template: string, request: Request) {
+	const loaded = await loadRoute(app, request, importRoute);
+	if (!loaded || loaded.route.render !== 'ssr') throw new Response('Not found', { status: 404 });
+	const { html, css } = renderToString(loaded.module.default as never, {
+		loaderData: loaded.loaderData,
+	});
+	return addRenderedBody(template, html, css, loaded.loaderData);
 }
 
-export async function renderSsgDocument() {
-	const { html, css } = await prerender(SsgPage);
+export async function renderSsgDocument(request: Request) {
+	const loaded = await loadRoute(app, request, importRoute);
+	if (!loaded || loaded.route.render !== 'ssg') throw new Response('Not found', { status: 404 });
+	const { html, css } = await prerender(loaded.module.default as never, {
+		loaderData: loaded.loaderData,
+	});
 	return staticDocument(html, css);
+}
+
+export async function loadRouteData(request: Request) {
+	const requestUrl = new URL(request.url);
+	const routeUrl = requestUrl.searchParams.get('url');
+	if (!routeUrl) return new Response('Missing route URL.', { status: 400 });
+
+	const loaded = await loadRoute(
+		app,
+		new Request(routeUrl, { headers: request.headers, signal: request.signal }),
+		importRoute,
+	);
+	if (!loaded) return new Response('Not found.', { status: 404 });
+	return Response.json(loaded.loaderData ?? null);
 }

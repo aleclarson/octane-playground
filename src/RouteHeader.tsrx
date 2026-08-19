@@ -14,7 +14,14 @@ export function RouteHeader({ activePath, spaNavigation = false }: RouteHeaderPr
 				const route = app.routes.find((candidate) => candidate.path === item.path);
 				const className = item.path === activePath ? 'active' : '';
 				@if (spaNavigation && route?.render === 'spa') {
-					<Link class={className} to={item.path}>{item.label}</Link>
+					<Link
+						class={className}
+						to={item.path}
+						onFocus={() => void app.prefetch(item.path)}
+						onMouseEnter={() => void app.prefetch(item.path)}
+					>
+						{item.label}
+					</Link>
 				} @else {
 					<a class={className} href={item.path}>{item.label}</a>
 				}
