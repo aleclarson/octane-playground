@@ -1,27 +1,28 @@
-# Octane route modes
+# Flamefront field guide
 
-This is a small Octane project using `@octanejs/vite-plugin` as the compiler
-integration. It demonstrates four distinct routes:
-
-The explicit route graph lives in [`src/routes.ts`](src/routes.ts). The local
-`flamefront` package provides typed manifest primitives and the `ff routes`
-inspector. App-specific navigation labels and page titles remain separate in
+This Octane project is a compact, observable tour of Flamefront. The explicit
+route graph in [`src/routes.ts`](src/routes.ts) drives matching, Remix Router,
+SSR dispatch, static generation, browser-only routes, and hydration policy.
+Navigation labels remain app display data in
 [`src/navigation.ts`](src/navigation.ts).
 
-- `/ssr` renders `SsrPage` on the server and uses `<Hydrate>` with an
-  interaction strategy for its deferred panel.
-- `/ssg` is generated at build time with `octane/static`'s `prerender()` and
-  is served without a client module.
-- `/spa-one` and `/spa-two` are client-only Vite routes. Their links update the
-  URL with `history.pushState` and switch the main content without a document
-  request.
-- Every route shares the same thin, full-width header with links to all four
-  routes. SPA links stay client-side; SSR and SSG links perform normal document
-  navigation.
+The shared shell hosts six routes and keeps its counter state during client
+navigation:
 
-Flamefront supplies the render-mode lifecycle around Octane's Vite compiler.
-Its route manifest drives the shared Remix Router graph, SSR dispatch, SSG
-output, and SPA fallback without a filesystem routing convention.
+- `/` uses SSR with full, immediate hydration.
+- `/products/:productId` proves dynamic parameters, a server-only catalog
+  dependency, and a generated interaction boundary.
+- `/hydration` owns separate idle, visible, interaction, and media boundaries.
+- `/server-static` uses `none`, leaving its server HTML inert inside the
+  interactive shell.
+- `/workspace` and `/workspace/settings` are browser-only routes with loader
+  data fetched through Flamefront's data endpoint.
+
+`/about` sits outside the shared shell. `ff build` prerenders it without a
+client module.
+
+The app uses `@octanejs/vite-plugin` for TSRX compilation and Flamefront for the
+multi-mode lifecycle. It has no filesystem routing convention.
 
 ```sh
 pnpm dev
@@ -31,11 +32,7 @@ pnpm check:routes
 pnpm exec ff routes
 ```
 
-`ff routes` reports each route's path, render mode, and hydration setting by
-loading the same TypeScript manifest used by the app and its Node adapters.
-
-`check:routes` proves the server-side distinctions. In a browser, open `/ssr`,
-confirm its label is in the initial document, then click the deferred button;
-open `/ssg` and inspect that the document has no module script; finally open
-`/spa-one` and use the shared header to switch to `/spa-two` without a page
-load.
+`ff routes` prints each path pattern, render mode, and hydration policy.
+`check:routes` builds and probes every mode, verifies dynamic loader parameters,
+checks that the `.server.ts` catalog marker is absent from client chunks, and
+confirms production sourcemaps.

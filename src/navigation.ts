@@ -1,32 +1,35 @@
 export type NavigationItem = {
 	path: string;
 	label: string;
-	pageTitle: string;
 };
 
 export const navigation: readonly NavigationItem[] = [
 	{
-		path: '/ssr',
-		label: 'SSR',
-		pageTitle: 'SSR route with deferred hydration',
+		path: '/',
+		label: 'Overview',
 	},
 	{
-		path: '/ssg',
-		label: 'SSG',
-		pageTitle: 'SSG route',
+		path: '/products/octane',
+		label: 'Product',
 	},
 	{
-		path: '/spa-one',
-		label: 'SPA one',
-		pageTitle: 'SPA route one',
+		path: '/hydration',
+		label: 'Hydration lab',
 	},
 	{
-		path: '/spa-two',
-		label: 'SPA two',
-		pageTitle: 'SPA route two',
+		path: '/server-static',
+		label: 'Server static',
+	},
+	{
+		path: '/workspace',
+		label: 'Workspace',
+	},
+	{
+		path: '/workspace/settings',
+		label: 'Settings',
+	},
+	{
+		path: '/about',
+		label: 'About',
 	},
 ];
-
-export function navigationFor(path: string) {
-	return navigation.find((item) => item.path === path);
-}

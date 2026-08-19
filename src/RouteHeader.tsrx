@@ -4,16 +4,18 @@ import { app } from './routes.ts';
 
 type RouteHeaderProps = {
 	activePath: string;
-	spaNavigation?: boolean;
+	clientNavigation?: boolean;
 };
 
-export function RouteHeader({ activePath, spaNavigation = false }: RouteHeaderProps) @{
+export function RouteHeader({ activePath, clientNavigation = false }: RouteHeaderProps) @{
 	<header class="site-header">
 		<nav class="site-nav" aria-label="All routes">
 			@for (const item of navigation; key item.path) {
-				const route = app.routes.find((candidate) => candidate.path === item.path);
+				const route = app.match(item.path)?.data;
 				const className = item.path === activePath ? 'active' : '';
-				@if (spaNavigation && route?.render === 'spa') {
+				const canMountInShell =
+					clientNavigation && route?.render !== 'ssg' && route?.hydration !== 'none';
+				@if (canMountInShell) {
 					<Link
 						class={className}
 						to={item.path}
