@@ -1,7 +1,7 @@
 import { renderToString } from 'octane/server';
 import { prerender } from 'octane/static';
 import { createServerRouter } from 'flamefront/remix-router';
-import { loadRoute, type RouteModule } from 'flamefront/server';
+import { createSrvxServer, loadRoute, type RouteModule } from 'flamefront/server';
 import StaticRouter from './StaticRouter.tsrx';
 import { app } from './routes.ts';
 import globalStyles from './styles.css?raw';
@@ -81,3 +81,10 @@ export async function loadRouteData(request: Request) {
 	if (!loaded) return new Response('Not found.', { status: 404 });
 	return Response.json(loaded.loaderData ?? null);
 }
+
+export default createSrvxServer({
+	app,
+	clientDirectory: new URL('../client/', import.meta.url),
+	loadRouteData,
+	renderSsrDocument,
+});
