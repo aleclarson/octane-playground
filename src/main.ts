@@ -1,7 +1,7 @@
 import { createRoot, hydrateRoot } from 'octane';
 import { App } from './App.tsrx';
 import { SsrPage } from './SsrPage.tsrx';
-import { routes } from './routes.ts';
+import { app } from './routes.ts';
 import './styles.css';
 
 const root = document.getElementById('root');
@@ -10,7 +10,7 @@ if (!root) {
 	throw new Error('Octane route shell is missing #root.');
 }
 
-const ssrRoute = routes.find((route) => route.render === 'ssr');
+const ssrRoute = app.routes.find((route) => route.render === 'ssr');
 
 if (window.location.pathname === ssrRoute?.path) {
 	hydrateRoot(root, SsrPage);

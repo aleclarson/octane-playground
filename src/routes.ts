@@ -18,6 +18,3 @@ export const app = defineApp({
 		}),
 	],
 });
-
-export const routes = app.routes;
-export const spaRoutes = routes.filter((route) => route.render === 'spa');

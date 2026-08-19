@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'octane';
 import { navigationFor } from './navigation.ts';
-import { spaRoutes } from './routes.ts';
+import { app } from './routes.ts';
 import { RouteHeader } from './RouteHeader.tsrx';
+
+const spaRoutes = app.routes.filter((route) => route.render === 'spa');
 
 function normalizePath(pathname: string) {
 	return spaRoutes.some((route) => route.path === pathname) ? pathname : spaRoutes[0]?.path ?? '/';

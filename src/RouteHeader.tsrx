@@ -1,5 +1,5 @@
 import { navigation } from './navigation.ts';
-import { routes } from './routes.ts';
+import { app } from './routes.ts';
 
 type RouteHeaderProps = {
 	activePath: string;
@@ -8,7 +8,7 @@ type RouteHeaderProps = {
 
 export function RouteHeader({ activePath, onNavigate }: RouteHeaderProps) @{
 	const handleClick = (event: MouseEvent, nextPath: string) => {
-		const nextRoute = routes.find((route) => route.path === nextPath);
+		const nextRoute = app.routes.find((route) => route.path === nextPath);
 		if (onNavigate && nextRoute?.render === 'spa') onNavigate(event, nextPath);
 	};
 
