@@ -4,6 +4,7 @@ import { octane } from '@octanejs/vite-plugin';
 export default defineConfig({
 	plugins: [octane()],
 	build: {
+		sourcemap: true,
 		target: 'esnext',
 	},
 });
