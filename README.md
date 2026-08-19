@@ -3,12 +3,10 @@
 This is a small Octane project using `@octanejs/vite-plugin` as the compiler
 integration. It demonstrates four distinct routes:
 
-Each route is declared beside its Octane component with `defineRoute()`. The
-local `flamefront` Vite plugin extracts those declarations at compile time and
-generates `virtual:flamefront/routes`; there is no authored route manifest.
-[`flamefront.config.json`](flamefront.config.json) defines the source files that
-both Vite and `ff routes` scan. App-specific navigation labels and page titles
-remain separate in [`src/navigation.ts`](src/navigation.ts).
+The explicit route graph lives in [`src/routes.ts`](src/routes.ts). The local
+`flamefront` package provides typed manifest primitives and the `ff routes`
+inspector. App-specific navigation labels and page titles remain separate in
+[`src/navigation.ts`](src/navigation.ts).
 
 - `/ssr` renders `SsrPage` on the server and uses `<Hydrate>` with an
   interaction strategy for its deferred panel.
@@ -34,8 +32,8 @@ pnpm check:routes
 pnpm exec ff routes
 ```
 
-`ff routes` reports each discovered route's path, render mode, and hydration
-setting without loading Vite or executing application modules.
+`ff routes` reports each route's path, render mode, and hydration setting by
+loading the same TypeScript manifest used by the app and its Node adapters.
 
 `check:routes` proves the server-side distinctions. In a browser, open `/ssr`,
 confirm its label is in the initial document, then click the deferred button;

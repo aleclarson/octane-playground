@@ -1,5 +1,5 @@
-import { routes } from 'virtual:flamefront/routes';
 import { navigation } from './navigation.ts';
+import { routes } from './routes.ts';
 
 type RouteHeaderProps = {
 	activePath: string;

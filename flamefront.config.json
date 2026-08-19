@@ -1,5 +1,0 @@
-{
-  "routes": {
-    "include": ["src/**/*.tsrx"]
-  }
-}
