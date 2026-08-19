@@ -1,7 +1,7 @@
 import { createRoot, hydrateRoot } from 'octane';
+import { routes } from 'virtual:flamefront/routes';
 import { App } from './App.tsrx';
 import { SsrPage } from './SsrPage.tsrx';
-import { routes } from './routes.ts';
 import './styles.css';
 
 const root = document.getElementById('root');

@@ -1,3 +1,4 @@
+import { defineRoute } from 'flamefront';
 import { Hydrate } from 'octane';
 import { interaction } from 'octane/hydration';
 import { DeferredPanel } from './DeferredPanel.tsrx';
@@ -21,3 +22,9 @@ export function SsrPage() @{
 		</main>
 	</div>
 }
+
+defineRoute(SsrPage, {
+	path: '/ssr',
+	render: 'ssr',
+	hydration: 'deferred',
+});

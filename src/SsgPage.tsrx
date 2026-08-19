@@ -1,3 +1,4 @@
+import { defineRoute } from 'flamefront';
 import { RouteHeader } from './RouteHeader.tsrx';
 
 export function SsgPage() @{
@@ -15,3 +16,9 @@ export function SsgPage() @{
 		</main>
 	</div>
 }
+
+defineRoute(SsgPage, {
+	path: '/ssg',
+	render: 'ssg',
+	hydration: 'none',
+});

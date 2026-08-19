@@ -1,6 +1,7 @@
+import { defineRoute } from 'flamefront';
 import { useEffect, useState } from 'octane';
+import { spaRoutes } from 'virtual:flamefront/routes';
 import { navigationFor } from './navigation.ts';
-import { spaRoutes } from './routes.ts';
 import { RouteHeader } from './RouteHeader.tsrx';
 
 function normalizePath(pathname: string) {
@@ -38,3 +39,13 @@ export function App() @{
 		</main>
 	</div>
 }
+
+defineRoute(App, {
+	path: '/spa-one',
+	render: 'spa',
+});
+
+defineRoute(App, {
+	path: '/spa-two',
+	render: 'spa',
+});
