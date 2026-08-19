@@ -16,8 +16,44 @@ body {
 	min-height: 100vh;
 }
 
-.page {
+.app-shell {
 	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background: #f1f5f9;
+}
+
+.site-header {
+	width: 100%;
+	background: #0f172a;
+}
+
+.site-nav {
+	width: min(100%, 42rem);
+	margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.5rem 1.25rem;
+}
+
+.site-nav a {
+	padding: 0.45rem 0.7rem;
+	border-radius: 0.5rem;
+	color: #cbd5e1;
+	font-size: 0.85rem;
+	text-decoration: none;
+}
+
+.site-nav a.active,
+.site-nav a:hover {
+	background: #334155;
+	color: #fff;
+}
+
+.page {
+	flex: 1;
 	display: grid;
 	align-content: center;
 	padding: 2rem 1.25rem;
@@ -27,10 +63,8 @@ body {
 	width: min(100%, 42rem);
 	margin: 0 auto;
 	padding: clamp(1.5rem, 4vw, 2.5rem);
-	border: 1px solid #cbd5e1;
 	border-radius: 1rem;
-	background: white;
-	box-shadow: 0 1rem 3rem rgb(15 23 42 / 6%);
+	background: #fff;
 }
 
 .eyebrow {
@@ -54,42 +88,16 @@ p {
 	line-height: 1.65;
 }
 
-.route-nav {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.6rem;
-	margin-bottom: 2rem;
-	padding-bottom: 1rem;
-	border-bottom: 1px solid #e2e8f0;
-}
-
-.route-nav a {
-	padding: 0.45rem 0.7rem;
-	border: 1px solid #cbd5e1;
-	border-radius: 999px;
-	color: #334155;
-	font-size: 0.9rem;
-	text-decoration: none;
-}
-
-.route-nav a.active,
-.route-nav a:hover {
-	border-color: #64748b;
-	background: #f1f5f9;
-	color: #0f172a;
-}
-
 .deferred-panel {
 	margin-top: 2rem;
 	padding: 1.25rem;
-	border: 1px solid #cbd5e1;
 	border-radius: 0.8rem;
-	background: #f8fafc;
+	background: #f1f5f9;
 }
 
 button {
 	padding: 0.65rem 0.9rem;
-	border: 1px solid #1e293b;
+	border: 0;
 	border-radius: 0.55rem;
 	background: #1e293b;
 	color: white;

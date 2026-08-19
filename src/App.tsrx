@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'octane';
 import { spaRoutes } from './route-manifest.js';
+import { RouteHeader } from './RouteHeader.tsrx';
 
 function normalizePath(pathname: string) {
 	return spaRoutes.some((route) => route.path === pathname) ? pathname : '/spa-one';
@@ -21,26 +22,17 @@ export function App() @{
 		setPath(nextPath);
 	};
 
-	<main class="page" data-route={currentRoute.path} data-render-mode="spa">
-		<section class="content">
-			<nav class="route-nav" aria-label="SPA routes">
-				@for (const route of spaRoutes; key route.path) {
-					<a
-						class={route.path === currentRoute.path ? 'active' : ''}
-						href={route.path}
-						onClick={(event) => navigate(event, route.path)}
-					>
-						{route.label as string}
-					</a>
-				}
-			</nav>
-
-			<p class="eyebrow">Octane Vite playground</p>
-			<h1>{currentRoute.label as string}</h1>
-			<p>
-				This label is rendered by the browser-only Octane app. Use the links above
-				to switch between the two SPA routes without a document request.
-			</p>
-		</section>
-	</main>
+	<div class="app-shell">
+		<RouteHeader activePath={currentRoute.path} onNavigate={navigate} />
+		<main class="page" data-route={currentRoute.path} data-render-mode="spa">
+			<section class="content">
+				<p class="eyebrow">Octane Vite playground</p>
+				<h1>{currentRoute.label as string}</h1>
+				<p>
+					This label is rendered by the browser-only Octane app. Use the header to
+					switch between routes.
+				</p>
+			</section>
+		</main>
+	</div>
 }

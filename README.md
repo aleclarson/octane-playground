@@ -10,6 +10,9 @@ integration. It demonstrates four distinct routes:
 - `/spa-one` and `/spa-two` are client-only Vite routes. Their links update the
   URL with `history.pushState` and switch the main content without a document
   request.
+- Every route shares the same thin, full-width header with links to all four
+  routes. SPA links stay client-side; SSR and SSG links perform normal document
+  navigation.
 
 The published Vite app layer currently treats every `RenderRoute` as SSR and
 does not have a per-route SSG/SPA mode field. This project therefore keeps the
@@ -23,8 +26,8 @@ pnpm preview
 pnpm check:routes
 ```
 
-`check:routes` proves the server-side distinctions. In a browser, open
-`/ssr`, confirm its label is in the initial document, then click the deferred
-button; open `/ssg` and inspect that the document has no module script; finally
-open `/spa-one` and use its navigation to switch to `/spa-two` without a page
+`check:routes` proves the server-side distinctions. In a browser, open `/ssr`,
+confirm its label is in the initial document, then click the deferred button;
+open `/ssg` and inspect that the document has no module script; finally open
+`/spa-one` and use the shared header to switch to `/spa-two` without a page
 load.
