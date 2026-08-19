@@ -9,9 +9,10 @@
     "check:routes": "node scripts/check-routes.mjs"
   },
   "dependencies": {
-    "@octanejs/vite-plugin": "latest",
+    "@octanejs/remix-router": "0.1.36",
+    "@octanejs/vite-plugin": "0.1.40",
     "flamefront": "workspace:*",
-    "octane": "latest"
+    "octane": "0.1.40"
   },
   "devDependencies": {
     "vite": "latest"

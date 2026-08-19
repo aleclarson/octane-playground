@@ -1,27 +1,23 @@
+import { Link } from '@octanejs/remix-router';
 import { navigation } from './navigation.ts';
 import { app } from './routes.ts';
 
 type RouteHeaderProps = {
 	activePath: string;
-	onNavigate?: (event: MouseEvent, nextPath: string) => void;
+	spaNavigation?: boolean;
 };
 
-export function RouteHeader({ activePath, onNavigate }: RouteHeaderProps) @{
-	const handleClick = (event: MouseEvent, nextPath: string) => {
-		const nextRoute = app.routes.find((route) => route.path === nextPath);
-		if (onNavigate && nextRoute?.render === 'spa') onNavigate(event, nextPath);
-	};
-
+export function RouteHeader({ activePath, spaNavigation = false }: RouteHeaderProps) @{
 	<header class="site-header">
 		<nav class="site-nav" aria-label="All routes">
 			@for (const item of navigation; key item.path) {
-				<a
-					class={item.path === activePath ? 'active' : ''}
-					href={item.path}
-					onClick={(event) => handleClick(event, item.path)}
-				>
-					{item.label}
-				</a>
+				const route = app.routes.find((candidate) => candidate.path === item.path);
+				const className = item.path === activePath ? 'active' : '';
+				@if (spaNavigation && route?.render === 'spa') {
+					<Link class={className} to={item.path}>{item.label}</Link>
+				} @else {
+					<a class={className} href={item.path}>{item.label}</a>
+				}
 			}
 		</nav>
 	</header>
