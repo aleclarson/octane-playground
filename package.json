@@ -3,9 +3,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "node scripts/dev.mjs",
-    "build": "node scripts/build.mjs",
-    "preview": "node scripts/preview.mjs",
+    "dev": "ff dev",
+    "build": "ff build",
+    "preview": "ff preview",
     "check:routes": "node scripts/check-routes.mjs"
   },
   "dependencies": {
