@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'octane';
-import { spaRoutes } from './route-manifest.js';
+import { spaRoutes } from './routes.ts';
 import { RouteHeader } from './RouteHeader.tsrx';
 
 function normalizePath(pathname: string) {
-	return spaRoutes.some((route) => route.path === pathname) ? pathname : '/spa-one';
+	return spaRoutes.some((route) => route.path === pathname) ? pathname : spaRoutes[0]?.path ?? '/';
 }
 
 export function App() @{
@@ -24,7 +24,7 @@ export function App() @{
 
 	<div class="app-shell">
 		<RouteHeader activePath={currentRoute.path} onNavigate={navigate} />
-		<main class="page" data-route={currentRoute.path} data-render-mode="spa">
+		<main class="page" data-route={currentRoute.path} data-render-mode={currentRoute.render}>
 			<section class="content">
 				<p class="eyebrow">Octane Vite playground</p>
 				<h1>{currentRoute.label as string}</h1>

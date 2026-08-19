@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@octanejs/vite-plugin": "latest",
+    "flamefront": "workspace:*",
     "octane": "latest"
   },
   "devDependencies": {

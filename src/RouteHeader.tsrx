@@ -1,4 +1,4 @@
-import { routes } from './route-manifest.js';
+import { routes } from './routes.ts';
 
 type RouteHeaderProps = {
 	activePath: string;
@@ -7,7 +7,8 @@ type RouteHeaderProps = {
 
 export function RouteHeader({ activePath, onNavigate }: RouteHeaderProps) @{
 	const handleClick = (event: MouseEvent, nextPath: string) => {
-		if (onNavigate && nextPath.startsWith('/spa-')) onNavigate(event, nextPath);
+		const nextRoute = routes.find((route) => route.path === nextPath);
+		if (onNavigate && nextRoute?.render === 'spa') onNavigate(event, nextPath);
 	};
 
 	<header class="site-header">

@@ -3,6 +3,11 @@
 This is a small Octane project using `@octanejs/vite-plugin` as the compiler
 integration. It demonstrates four distinct routes:
 
+The explicit route graph lives in [`src/routes.ts`](src/routes.ts). It is the first
+consumer of the local `flamefront` package, which currently provides the
+manifest primitives and the `ff routes` inspector. The existing scripts remain
+the thin adapter around Octane's current Vite capabilities.
+
 - `/ssr` renders `SsrPage` on the server and uses `<Hydrate>` with an
   interaction strategy for its deferred panel.
 - `/ssg` is generated at build time with `octane/static`'s `prerender()` and
@@ -24,6 +29,7 @@ pnpm dev
 pnpm build
 pnpm preview
 pnpm check:routes
+pnpm exec ff routes
 ```
 
 `check:routes` proves the server-side distinctions. In a browser, open `/ssr`,
