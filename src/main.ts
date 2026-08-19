@@ -1,8 +1,8 @@
 import { createRoot, hydrateRoot } from 'octane';
+import { createClientRouter } from 'flamefront/remix-router';
+import ClientRouter from './ClientRouter.tsrx';
 import { app } from './routes.ts';
 import './styles.css';
-
-const routeComponents = import.meta.glob('/src/*.tsrx', { import: 'default' });
 
 const root = document.getElementById('root');
 
@@ -16,18 +16,23 @@ if (!routeMatch) {
 	throw new Error(`No Flamefront route matches ${window.location.pathname}.`);
 }
 
-const importComponent = routeComponents[routeMatch.data.entry];
-if (!importComponent) {
-	throw new Error(`No Vite route component was generated for ${routeMatch.data.entry}.`);
+const hydrationData = (window as typeof window & {
+	__staticRouterHydrationData?: unknown;
+}).__staticRouterHydrationData;
+const router = createClientRouter({ hydrationData });
+
+if (!router.state.initialized) {
+	await new Promise<void>((resolve) => {
+		const unsubscribe = router.subscribe((state) => {
+			if (!state.initialized) return;
+			unsubscribe();
+			resolve();
+		});
+	});
 }
-const RouteComponent = (await importComponent()) as never;
 
 if (routeMatch.data.render === 'ssr') {
-	const loaderDataElement = document.getElementById('flamefront-loader-data');
-	const loaderData = loaderDataElement?.textContent
-		? JSON.parse(loaderDataElement.textContent)
-		: undefined;
-	hydrateRoot(root, RouteComponent, { loaderData });
+	hydrateRoot(root, ClientRouter, { router });
 } else {
-	createRoot(root).render(RouteComponent);
+	createRoot(root).render(ClientRouter, { router });
 }

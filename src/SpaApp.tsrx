@@ -1,7 +1,4 @@
-import { Outlet, useLoaderData, useLocation } from '@octanejs/remix-router';
-import type { SpaLoaderData } from './App.tsrx';
-import { navigationFor } from './navigation.ts';
-import { app } from './routes.ts';
+import { Outlet, useLocation } from '@octanejs/remix-router';
 import { RouteHeader } from './RouteHeader.tsrx';
 
 export function SpaLayout() @{
@@ -13,25 +10,4 @@ export function SpaLayout() @{
 	</div>
 }
 
-export function SpaPage() @{
-	const location = useLocation();
-	const loaderData = useLoaderData() as SpaLoaderData;
-	const currentRoute = app.match(location.pathname, { render: 'spa' })?.data;
-	const currentNavigation = navigationFor(location.pathname);
-
-	<main
-		class="page"
-		data-route={currentRoute?.path ?? location.pathname}
-		data-render-mode={currentRoute?.render ?? 'spa'}
-	>
-		<section class="content">
-			<p class="eyebrow">Octane Vite playground</p>
-			<h1>{currentNavigation?.pageTitle ?? location.pathname}</h1>
-			<p>
-				This label is rendered by the browser-only Octane app. Use the header to
-				switch between routes.
-			</p>
-			<p data-testid="loader-data">{loaderData.message}</p>
-		</section>
-	</main>
-}
+export default SpaLayout;

@@ -1,10 +1,16 @@
 import { renderToString } from 'octane/server';
 import { prerender } from 'octane/static';
+import { createServerRouter } from 'flamefront/remix-router';
 import { loadRoute, type RouteModule } from 'flamefront/server';
+import StaticRouter from './StaticRouter.tsrx';
 import { app } from './routes.ts';
 import globalStyles from './styles.css?raw';
 
-const routeModules = import.meta.glob('/src/*.tsrx');
+const routeModules = import.meta.glob([
+	'/src/*.tsrx',
+	'!/src/ClientRouter.tsrx',
+	'!/src/StaticRouter.tsrx',
+]);
 
 async function importRoute(entry: string): Promise<RouteModule> {
 	const importModule = routeModules[entry];
@@ -12,11 +18,7 @@ async function importRoute(entry: string): Promise<RouteModule> {
 	return importModule() as Promise<RouteModule>;
 }
 
-function serializeLoaderData(loaderData: unknown) {
-	return JSON.stringify(loaderData ?? null).replaceAll('<', '\\u003c');
-}
-
-function addRenderedBody(template: string, body: string, css: string, loaderData: unknown) {
+function addRenderedBody(template: string, body: string, css: string) {
 	const root = '<div id="root"></div>';
 
 	if (!template.includes(root)) {
@@ -25,10 +27,7 @@ function addRenderedBody(template: string, body: string, css: string, loaderData
 
 	return template
 		.replace(root, `<div id="root">${body}</div>`)
-		.replace(
-			'</head>',
-			`${css}<script id="flamefront-loader-data" type="application/json">${serializeLoaderData(loaderData)}</script></head>`,
-		);
+		.replace('</head>', `${css}</head>`);
 }
 
 function staticDocument(body: string, css: string) {
@@ -49,12 +48,15 @@ function staticDocument(body: string, css: string) {
 }
 
 export async function renderSsrDocument(template: string, request: Request) {
-	const loaded = await loadRoute(app, request, importRoute);
-	if (!loaded || loaded.route.render !== 'ssr') throw new Response('Not found', { status: 404 });
-	const { html, css } = renderToString(loaded.module.default as never, {
-		loaderData: loaded.loaderData,
+	const route = app.match(request.url)?.data;
+	if (!route || route.render !== 'ssr') throw new Response('Not found', { status: 404 });
+	const result = await createServerRouter(request);
+	if (result instanceof Response) throw result;
+	const { html, css } = renderToString(StaticRouter, {
+		router: result.router,
+		context: result.context,
 	});
-	return addRenderedBody(template, html, css, loaded.loaderData);
+	return addRenderedBody(template, html, css);
 }
 
 export async function renderSsgDocument(request: Request) {
