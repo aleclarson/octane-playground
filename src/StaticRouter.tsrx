@@ -1,5 +1,5 @@
-import { StaticRouterProvider } from '@octanejs/remix-router';
+import { RouterProvider } from '@octanejs/remix-router/dom';
 
 export default function StaticRouter({ router, context }: { router: any; context: any }) @{
-	<StaticRouterProvider router={router} context={context} />
+	<RouterProvider router={router} />
 }

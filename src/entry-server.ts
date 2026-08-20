@@ -1,5 +1,9 @@
 import { renderToString } from 'octane/server';
-import { createServerRouter } from 'flamefront/remix-router';
+import {
+	createStaticRouter,
+	isRouteErrorResponse,
+} from '@octanejs/remix-router';
+import { createServerRouter, routes as routeGraph } from 'flamefront/remix-router';
 import {
 	createSrvxServer,
 	loadRoute,
@@ -21,7 +25,45 @@ async function importRoute(entry: string): Promise<RouteModule> {
 	return importModule() as Promise<RouteModule>;
 }
 
-function addRenderedBody(template: string, body: string, css: string) {
+function serializeErrors(errors: Record<string, unknown> | null): Record<string, unknown> | null {
+	if (!errors) return null;
+	const serialized: Record<string, unknown> = {};
+	for (const [key, value] of Object.entries(errors)) {
+		if (isRouteErrorResponse(value)) {
+			serialized[key] = { ...value, __type: 'RouteErrorResponse' };
+		} else if (value instanceof Error) {
+			serialized[key] = {
+				message: value.message,
+				__type: 'Error',
+				...(value.name !== 'Error' ? { __subType: value.name } : {}),
+			};
+		} else {
+			serialized[key] = value;
+		}
+	}
+	return serialized;
+}
+
+function staticRouterHydrationScript(context: any): string {
+	const data = JSON.stringify({
+		loaderData: context.loaderData,
+		actionData: context.actionData,
+		errors: serializeErrors(context.errors),
+	});
+	const escaped = JSON.stringify(data).replace(/[&><\u2028\u2029]/g, (character) => {
+		const escapes: Record<string, string> = {
+			'&': '\\u0026',
+			'>': '\\u003e',
+			'<': '\\u003c',
+			' ': '\\u2028',
+			' ': '\\u2029',
+		};
+		return escapes[character] ?? character;
+	});
+	return `<script>window.__staticRouterHydrationData = JSON.parse(${escaped});</script>`;
+}
+
+function addRenderedBody(template: string, body: string, css: string, hydrationScript: string) {
 	const root = '<div id="root"></div>';
 
 	if (!template.includes(root)) {
@@ -30,7 +72,8 @@ function addRenderedBody(template: string, body: string, css: string) {
 
 	return template
 		.replace(root, `<div id="root">${body}</div>`)
-		.replace('</head>', `${css}</head>`);
+		.replace('</head>', `${css}</head>`)
+		.replace('</body>', `${hydrationScript}</body>`);
 }
 
 export async function renderSsrDocument(template: string, request: Request) {
@@ -39,13 +82,45 @@ export async function renderSsrDocument(template: string, request: Request) {
 	if (!shellRequest && (!route || (route.render !== 'client' && route.render !== 'server'))) {
 		throw new Response('Not found', { status: 404 });
 	}
-	const result = await createServerRouter(request);
+	const result = shellRequest || route?.render === 'client'
+		? await createShellRouter(request)
+		: await createServerRouter(request);
 	if (result instanceof Response) throw result;
 	const { html, css } = renderToString(StaticRouter, {
 		router: result.router,
 		context: result.context,
 	});
-	return addRenderedBody(template, html, css);
+	return addRenderedBody(template, html, css, staticRouterHydrationScript(result.context));
+}
+
+async function createShellRouter(request: Request) {
+	const url = new URL(request.url);
+	const context = {
+		basename: '/',
+		location: {
+			pathname: url.pathname,
+			search: url.search,
+			hash: url.hash,
+			state: null,
+			key: 'default',
+		},
+		matches: [{
+			params: {},
+			pathname: '',
+			pathnameBase: '/',
+			route: { ...routeGraph[0], id: '0' },
+		}],
+		loaderData: {},
+		actionData: null,
+		errors: null,
+		statusCode: 200,
+		loaderHeaders: {},
+		actionHeaders: {},
+	};
+	return {
+		context,
+		router: createStaticRouter(routeGraph, context as any),
+	};
 }
 
 export async function renderSsgDocument(template: string, request: Request) {
@@ -59,7 +134,7 @@ export async function renderSsgDocument(template: string, request: Request) {
 	});
 	const leaf = result.context.matches.at(-1);
 	const document: RenderedDocument = {
-		html: addRenderedBody(template, html, css),
+		html: addRenderedBody(template, html, css, staticRouterHydrationScript(result.context)),
 		routeData: leaf?.route.id ? result.context.loaderData[leaf.route.id] ?? null : null,
 		status: result.context.statusCode,
 	};
