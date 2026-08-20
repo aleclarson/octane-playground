@@ -6,10 +6,8 @@ SSR dispatch, static generation, browser-only routes, and hydration policy.
 Navigation labels remain app display data in
 [`src/navigation.ts`](src/navigation.ts).
 
-The shared shell hosts six routes through Flamefront's `<Frame>` and keeps its
-counter state during client navigation. `<Frame>` is the router-owned slot for
-the matched child route. The generated graph imports each child as a separate
-chunk, so route splitting needs no app-level `lazy()` wrapper.
+The shared shell hosts six routes and keeps its counter state during client
+navigation:
 
 - `/` uses SSR with full, immediate hydration.
 - `/products/:productId` proves dynamic parameters, a server-only catalog
@@ -37,5 +35,4 @@ pnpm exec ff routes
 `ff routes` prints each path pattern, render mode, and hydration policy.
 `check:routes` builds and probes every mode, verifies dynamic loader parameters,
 checks that the `.server.ts` catalog marker is absent from client chunks, and
-confirms that every framed route is a dynamic entry, and checks production
-sourcemaps.
+confirms production sourcemaps.

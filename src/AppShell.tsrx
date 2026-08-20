@@ -1,5 +1,4 @@
-import { useLocation } from '@octanejs/remix-router';
-import { Frame } from 'flamefront/remix-router';
+import { Outlet, useLocation } from '@octanejs/remix-router';
 import { useState } from 'octane';
 import { RouteHeader } from './RouteHeader.tsrx';
 
@@ -15,7 +14,7 @@ export function AppShell() @{
 				{shellCount}
 			</button>
 		</div>
-		<Frame />
+		<Outlet />
 	</div>
 }
 

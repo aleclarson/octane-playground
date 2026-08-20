@@ -20,10 +20,9 @@ export function HomePage() @{
 			<p class="eyebrow">Flamefront field guide</p>
 			<h1>One graph, several ways to render</h1>
 			<p>
-				This route uses ordinary SSR and hydrates with the shared shell. The shell's
-				<code>{'<Frame>'}</code> renders this lazy route chunk without an app-level
-				<code>lazy()</code> wrapper. The other routes make server-only loaders,
-				generated boundaries, static output, and browser navigation visible.
+				This route uses ordinary SSR and hydrates with the shared shell. The other
+				routes make matching, server-only loaders, generated boundaries, static
+				output, and browser navigation visible.
 			</p>
 			<RouteFacts pathname="/" loader={loaderData.message} />
 			<div class="demo-action">
