@@ -1,4 +1,5 @@
 import type { LoaderArgs } from 'flamefront/server';
+import { useLoaderData } from '@octanejs/remix-router';
 import { RouteFacts } from './RouteFacts.tsrx';
 
 type AboutData = {
@@ -9,8 +10,8 @@ export async function loader({ request }: LoaderArgs): Promise<AboutData> {
 	return { message: `Generated ${new URL(request.url).pathname} during ff build.` };
 }
 
-export function AboutPage({ loaderData }: { loaderData?: AboutData }) @{
-	const message = loaderData?.message ?? 'Build loader data unavailable.';
+export function AboutPage() @{
+	const message = (useLoaderData() as AboutData).message;
 
 	<main class="page" data-route="/about" data-render-mode="static">
 		<section class="content">
