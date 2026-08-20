@@ -1,4 +1,4 @@
-import { createRoot, hydrateRoot } from 'octane';
+import { hydrateRoot } from 'octane';
 import { createClientRouter } from 'flamefront/remix-router';
 import ClientRouter from './ClientRouter.tsrx';
 import { app } from './routes.ts';
@@ -20,19 +20,4 @@ const hydrationData = (window as typeof window & {
 	__staticRouterHydrationData?: unknown;
 }).__staticRouterHydrationData;
 const router = createClientRouter({ hydrationData });
-
-if (!router.state.initialized) {
-	await new Promise<void>((resolve) => {
-		const unsubscribe = router.subscribe((state) => {
-			if (!state.initialized) return;
-			unsubscribe();
-			resolve();
-		});
-	});
-}
-
-if (routeMatch.data.render === 'ssr') {
-	hydrateRoot(root, ClientRouter, { router });
-} else {
-	createRoot(root).render(ClientRouter, { router });
-}
+hydrateRoot(root, ClientRouter, { router });
