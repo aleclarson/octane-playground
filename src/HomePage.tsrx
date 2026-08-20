@@ -15,12 +15,12 @@ export function HomePage() @{
 	const loaderData = useLoaderData() as HomeLoaderData;
 	const [count, setCount] = useState(0);
 
-	<main class="page" data-route="/" data-render-mode="ssr">
+	<main class="page" data-route="/" data-render-mode="server">
 		<section class="content">
 			<p class="eyebrow">Flamefront field guide</p>
 			<h1>One graph, several ways to render</h1>
 			<p>
-				This route uses ordinary SSR and hydrates with the shared shell. The other
+				This server route uses full hydration with the persistent shell. The other
 				routes make matching, server-only loaders, generated boundaries, static
 				output, and browser navigation visible.
 			</p>

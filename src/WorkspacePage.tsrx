@@ -19,11 +19,11 @@ export function WorkspacePage() @{
 	const loaderData = useLoaderData() as WorkspaceData;
 	const [completed, setCompleted] = useState(0);
 
-	<main class="page" data-route="/workspace" data-render-mode="spa">
+	<main class="page" data-route="/workspace" data-render-mode="client">
 		<section class="content">
 			<p class="eyebrow">Browser-only route</p>
 			<h1>Workspace</h1>
-			<p>This component mounts in the browser after its loader endpoint resolves.</p>
+			<p>This client route mounts in the browser after its loader endpoint resolves.</p>
 			<RouteFacts pathname="/workspace" loader={loaderData.message} />
 			<ul class="task-list">
 				@for (const item of loaderData.items; index index; key item) {

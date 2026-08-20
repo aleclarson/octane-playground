@@ -1,33 +1,34 @@
 import { defineApp, layout, route } from 'flamefront';
 
 export const app = defineApp({
+	shell: '/src/AppShell.tsrx',
 	routes: [
-		layout('/src/AppShell.tsrx', [
-			route('/', '/src/HomePage.tsrx', {
-				render: 'ssr',
-				hydration: 'full',
-			}),
+		route('/', '/src/HomePage.tsrx', {
+			render: 'server',
+			hydration: 'full',
+		}),
+		layout('/src/AppLayout.tsrx', [
 			route('/products/:productId', '/src/ProductPage.tsrx', {
-				render: 'ssr',
+				render: 'server',
 				hydration: { when: 'interaction', events: ['click', 'focusin'] },
 			}),
 			route('/hydration', '/src/HydrationLab.tsrx', {
-				render: 'ssr',
+				render: 'server',
 				hydration: 'deferred',
 			}),
 			route('/server-static', '/src/ServerStaticPage.tsrx', {
-				render: 'ssr',
+				render: 'server',
 				hydration: 'none',
 			}),
 			route('/workspace', '/src/WorkspacePage.tsrx', {
-				render: 'spa',
+				render: 'client',
 			}),
 			route('/workspace/settings', '/src/SettingsPage.tsrx', {
-				render: 'spa',
+				render: 'client',
 			}),
 		]),
 		route('/about', '/src/AboutPage.tsrx', {
-			render: 'ssg',
+			render: 'static',
 			hydration: 'none',
 		}),
 	],

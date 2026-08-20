@@ -22,7 +22,7 @@ export function HydrationProbe({
 		<h2>{label}</h2>
 		<p>{description}</p>
 		<p class="probe-status" data-testid={`probe-${label.toLowerCase()}`}>
-			{hydrated ? `Hydrated by ${label.toLowerCase()}.` : 'SSR HTML is dormant.'}
+			{hydrated ? `Hydrated by ${label.toLowerCase()}.` : 'Server HTML is dormant.'}
 		</p>
 		@if (interactive) {
 			<button

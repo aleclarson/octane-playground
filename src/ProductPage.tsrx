@@ -27,7 +27,7 @@ export function ProductPage() @{
 	const loaderData = useLoaderData() as ProductLoaderData;
 	const [quantity, setQuantity] = useState(0);
 
-	<main class="page" data-route={location.pathname} data-render-mode="ssr">
+	<main class="page" data-route={location.pathname} data-render-mode="server">
 		<section class="content">
 			<p class="eyebrow">Generated interaction hydration</p>
 			<h1>{loaderData.product.name}</h1>

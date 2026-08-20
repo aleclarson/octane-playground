@@ -10,19 +10,20 @@ type HydrationLabData = {
 };
 
 export async function loader({ request }: LoaderArgs): Promise<HydrationLabData> {
-	return { message: `Loader completed ${new URL(request.url).pathname} before SSR.` };
+	return { message: `Loader completed ${new URL(request.url).pathname} before server render.` };
 }
 
 export function HydrationLab() @{
 	const loaderData = useLoaderData() as HydrationLabData;
 
-	<main class="page" data-route="/hydration" data-render-mode="ssr">
+	<main class="page" data-route="/hydration" data-render-mode="server">
 		<section class="content content-wide">
 			<p class="eyebrow">Author-owned hydration</p>
-			<h1>Four boundaries, one SSR response</h1>
+			<h1>Four boundaries, one server response</h1>
 			<p>
 				The route manifest says <code>deferred</code>, so Flamefront leaves boundary
-				placement to this component. Each card starts as server HTML.
+				placement to this component. Each card starts as server HTML and wakes on its
+				own trigger.
 			</p>
 			<RouteFacts pathname="/hydration" loader={loaderData.message} />
 			<div class="probe-grid">

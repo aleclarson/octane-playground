@@ -19,13 +19,13 @@ export function SettingsPage() @{
 	const loaderData = useLoaderData() as SettingsData;
 	const [compact, setCompact] = useState(loaderData.defaultCompact);
 
-	<main class="page" data-route="/workspace/settings" data-render-mode="spa">
+	<main class="page" data-route="/workspace/settings" data-render-mode="client">
 		<section class="content">
 			<p class="eyebrow">Second browser route</p>
 			<h1>Workspace settings</h1>
 			<p>
-				Move between this page and the workspace. The shared layout counter keeps
-				its value because Remix Router retains the parent layout.
+				Move between this page and the workspace. The app layout counter keeps its
+				value because both routes stay in the same layout branch.
 			</p>
 			<RouteFacts pathname="/workspace/settings" loader={loaderData.message} />
 			<div class="demo-action">

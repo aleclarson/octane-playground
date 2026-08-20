@@ -1,18 +1,27 @@
-import { Outlet, useLocation } from '@octanejs/remix-router';
+import { Outlet, useLocation, useNavigation } from '@octanejs/remix-router';
 import { useState } from 'octane';
-import { RouteHeader } from './RouteHeader.tsrx';
 
 export function AppShell() @{
 	const location = useLocation();
+	const navigation = useNavigation();
 	const [shellCount, setShellCount] = useState(0);
+	const isNavigating = navigation.state !== 'idle';
 
 	<div class="app-shell">
-		<RouteHeader activePath={location.pathname} clientNavigation />
-		<div class="shell-state" data-testid="shell-state">
-			<span>Shared layout state</span>
+		<div
+			class="shell-state"
+			data-testid="shell-state"
+			data-shell-path={location.pathname}
+			data-transition-state={navigation.state}
+		>
+			<span data-testid="shell-path">Shell path: {location.pathname}</span>
+			<span>Shell state: {shellCount}</span>
 			<button data-testid="shell-counter" onClick={() => setShellCount(shellCount + 1)}>
-				{shellCount}
+				Shell count {shellCount}
 			</button>
+			<span class="shell-transition" data-testid="shell-transition">
+				{isNavigating ? 'Navigating in the shell' : 'Shell ready'}
+			</span>
 		</div>
 		<Outlet />
 	</div>

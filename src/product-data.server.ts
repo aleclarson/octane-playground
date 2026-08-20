@@ -12,7 +12,7 @@ const products: Readonly<Record<string, ProductRecord>> = {
 	flamefront: {
 		id: 'flamefront',
 		name: 'Flamefront route map',
-		description: 'A printed route graph with SSR, SSG, and SPA annotations.',
+		description: 'A printed route graph with server, static, and client annotations.',
 		price: '$12',
 	},
 };

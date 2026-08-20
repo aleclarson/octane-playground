@@ -28,6 +28,12 @@ input {
 	background: #e8edf4;
 }
 
+.app-layout {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
 .site-header {
 	width: 100%;
 	background: #111827;
@@ -62,12 +68,30 @@ input {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-wrap: wrap;
 	gap: 0.65rem;
-	min-height: 2.5rem;
+	min-height: 3rem;
 	padding: 0.35rem 1.25rem;
 	background: #d7dee8;
 	color: #526077;
 	font-size: 0.78rem;
+}
+
+.layout-state {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.65rem;
+	min-height: 2.5rem;
+	padding: 0.35rem 1.25rem;
+	background: #eef2f7;
+	color: #526077;
+	font-size: 0.78rem;
+}
+
+.shell-transition {
+	color: #28543b;
 }
 
 .shell-state button {

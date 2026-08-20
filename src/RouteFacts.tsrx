@@ -9,8 +9,8 @@ type RouteFactsProps = {
 function hydrationLabel(route: RouteDefinition): string {
 	const hydration = route.hydration;
 	if (hydration === undefined) {
-		if (route.render === 'ssg') return 'none by render mode';
-		if (route.render === 'spa') return 'client mount';
+		if (route.render === 'static') return 'none by static mode';
+		if (route.render === 'client') return 'full on client mount';
 		return 'full';
 	}
 	if (typeof hydration === 'string') return hydration;

@@ -13,13 +13,14 @@ export async function loader({ request }: LoaderArgs): Promise<ServerStaticData>
 export function ServerStaticPage() @{
 	const loaderData = useLoaderData() as ServerStaticData;
 
-	<main class="page" data-route="/server-static" data-render-mode="ssr">
+	<main class="page" data-route="/server-static" data-render-mode="server">
 		<section class="content">
 			<p class="eyebrow">Permanent server HTML</p>
 			<h1>An inert page in an interactive shell</h1>
 			<p>
 				Flamefront wraps this route with Octane's <code>never()</code> strategy. The
-				header and shared counter hydrate, while this main area stays server-owned.
+				header, layout state, and shell counter hydrate, while this main area stays
+				server-owned.
 			</p>
 			<RouteFacts pathname="/server-static" loader={loaderData.message} />
 			<p class="static-note" data-testid="server-static-proof">

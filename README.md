@@ -2,24 +2,34 @@
 
 This Octane project is a compact, observable tour of Flamefront. The explicit
 route graph in [`src/routes.ts`](src/routes.ts) drives matching, Remix Router,
-SSR dispatch, static generation, browser-only routes, and hydration policy.
-Navigation labels remain app display data in
-[`src/navigation.ts`](src/navigation.ts).
+server and static documents, client routes, and hydration policy. Navigation
+labels remain app display data in [`src/navigation.ts`](src/navigation.ts).
 
-The shared shell hosts six routes and keeps its counter state during client
-navigation:
+The graph has one eager `AppShell` and one pathless `AppLayout`:
 
-- `/` uses SSR with full, immediate hydration.
-- `/products/:productId` proves dynamic parameters, a server-only catalog
-  dependency, and a generated interaction boundary.
-- `/hydration` owns separate idle, visible, interaction, and media boundaries.
-- `/server-static` uses `none`, leaving its server HTML inert inside the
-  interactive shell.
-- `/workspace` and `/workspace/settings` are browser-only routes with loader
-  data fetched through Flamefront's data endpoint.
+- `AppShell` owns the shell counter, current path, transition state, and root
+  `Outlet`. It stays mounted for every route.
+- `AppLayout` owns the route header and its own counter. Its state survives
+  navigation between the five app routes and resets when navigation leaves that
+  layout branch.
+- `/` and `/about` use only the shell, so neither page gets the app header.
 
-`/about` sits outside the shared shell. `ff build` prerenders it without a
-client module.
+The seven routes cover the public modes and hydration policies:
+
+| Path | Initial mode | Hydration proof |
+| --- | --- | --- |
+| `/` | `server` | Full shell and page hydration |
+| `/products/:productId` | `server` | Generated `interaction` boundary and dynamic loader params |
+| `/hydration` | `server` | Route-owned idle, visible, interaction, and media boundaries |
+| `/server-static` | `server` | `none`, leaving the page inert while shell and layout stay active |
+| `/workspace` | `client` | Shell and layout HTML with a pending route outlet |
+| `/workspace/settings` | `client` | Client loader data and layout state retention |
+| `/about` | `static` | Build-time HTML and `about/index.data.json` route data |
+
+Every `RouteHeader` item is a client-side router link. That includes the
+static `/about` link and the `none`-hydrated `/server-static` link. Later
+navigation does not replace the document. Static navigation reads its generated
+route-data artifact instead of running the route loader against the live server.
 
 The app uses `@octanejs/vite-plugin` for TSRX compilation and Flamefront for the
 multi-mode lifecycle. It has no filesystem routing convention.
@@ -33,6 +43,7 @@ pnpm exec ff routes
 ```
 
 `ff routes` prints each path pattern, render mode, and hydration policy.
-`check:routes` builds and probes every mode, verifies dynamic loader parameters,
-checks that the `.server.ts` catalog marker is absent from client chunks, and
-confirms production sourcemaps.
+`check:routes` probes the built shell and each initial mode, checks route
+matching and layout structure, verifies the static HTML and route-data artifact,
+checks that the `.server.ts` catalog marker is absent from client chunks and
+source maps, and confirms production sourcemaps.
