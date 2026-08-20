@@ -20,6 +20,10 @@ export const app = defineApp({
 				render: 'server',
 				hydration: 'none',
 			}),
+			route('/static-interactive', '/src/StaticInteractivePage.tsrx', {
+				render: 'static',
+				hydration: 'deferred',
+			}),
 			route('/workspace', '/src/WorkspacePage.tsrx', {
 				render: 'client',
 			}),

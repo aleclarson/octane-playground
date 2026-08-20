@@ -21,6 +21,10 @@ export const navigation: readonly NavigationItem[] = [
 		label: 'Server static',
 	},
 	{
+		path: '/static-interactive',
+		label: 'Static interactive',
+	},
+	{
 		path: '/workspace',
 		label: 'Workspace',
 	},

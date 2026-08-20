@@ -14,7 +14,7 @@ The graph has one eager `AppShell` and one pathless `AppLayout`:
   layout branch.
 - `/` and `/about` use only the shell, so neither page gets the app header.
 
-The seven routes cover the public modes and hydration policies:
+The eight routes cover the public modes and hydration policies:
 
 | Path | Initial mode | Hydration proof |
 | --- | --- | --- |
@@ -22,14 +22,21 @@ The seven routes cover the public modes and hydration policies:
 | `/products/:productId` | `server` | Generated `interaction` boundary and dynamic loader params |
 | `/hydration` | `server` | Route-owned idle, visible, interaction, and media boundaries |
 | `/server-static` | `server` | `none`, leaving the page inert while shell and layout stay active |
+| `/static-interactive` | `static` | Build-time HTML with an authored deferred boundary |
 | `/workspace` | `client` | Shell and layout HTML with a pending route outlet |
 | `/workspace/settings` | `client` | Client loader data and layout state retention |
 | `/about` | `static` | Build-time HTML and `about/index.data.json` route data |
 
 Every `RouteHeader` item is a client-side router link. That includes the
-static `/about` link and the `none`-hydrated `/server-static` link. Later
+static `/about` and `/static-interactive` links and the `none`-hydrated
+`/server-static` link. Later
 navigation does not replace the document. Static navigation reads its generated
 route-data artifact instead of running the route loader against the live server.
+
+Static routes may use `full`, `deferred`, or a generated trigger policy. `none`
+remains the explicit inert mode for a direct document; nested `<Hydrate>`
+boundaries under it do not activate until that route is mounted by SPA
+navigation.
 
 The app uses `@octanejs/vite-plugin` for TSRX compilation and Flamefront for the
 multi-mode lifecycle. It has no filesystem routing convention.
