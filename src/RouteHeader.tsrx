@@ -1,6 +1,6 @@
 import { Link } from '@octanejs/remix-router';
 import { navigation } from './navigation.ts';
-import { app } from './routes.ts';
+import { app } from './app.ts';
 
 type RouteHeaderProps = {
 	activePath: string;

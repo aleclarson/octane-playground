@@ -1,7 +1,7 @@
 import { createRoot, hydrateRoot } from 'octane';
 import { createClientRouter } from 'flamefront/remix-router';
 import ClientRouter from './ClientRouter.tsrx';
-import { app } from './routes.ts';
+import { app } from './app.ts';
 import './styles.css';
 
 const root = document.getElementById('root');

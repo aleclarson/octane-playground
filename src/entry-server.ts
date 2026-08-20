@@ -11,7 +11,7 @@ import {
 	type RouteModule,
 } from 'flamefront/server';
 import StaticRouter from './StaticRouter.tsrx';
-import { app } from './routes.ts';
+import { app } from './app.ts';
 
 const routeModules = import.meta.glob([
 	'/src/*.tsrx',

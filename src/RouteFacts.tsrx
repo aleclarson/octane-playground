@@ -1,5 +1,5 @@
 import type { HydrationMode, RouteDefinition } from 'flamefront';
-import { app } from './routes.ts';
+import { app } from './app.ts';
 
 type RouteFactsProps = {
 	pathname: string;

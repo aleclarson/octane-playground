@@ -1,7 +1,7 @@
 # Flamefront field guide
 
 This Octane project is a compact, observable tour of Flamefront. The explicit
-route graph in [`src/routes.ts`](src/routes.ts) drives matching, Remix Router,
+route graph in [`src/app.ts`](src/app.ts) drives matching, Remix Router,
 server and static documents, client routes, and hydration policy. Navigation
 labels remain app display data in [`src/navigation.ts`](src/navigation.ts).
 
