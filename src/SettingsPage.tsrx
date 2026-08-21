@@ -16,7 +16,7 @@ export async function loader({ request }: LoaderArgs): Promise<SettingsData> {
 }
 
 export function SettingsPage() @{
-  const loaderData = useLoaderData() as SettingsData
+  const loaderData = useLoaderData<SettingsData>()
   const [compact, setCompact] = useState(loaderData.defaultCompact)
 
   <main class="page" data-route="/workspace/settings" data-render-mode="client">

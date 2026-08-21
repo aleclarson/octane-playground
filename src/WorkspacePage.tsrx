@@ -20,7 +20,7 @@ export async function loader({ request }: LoaderArgs): Promise<WorkspaceData> {
 }
 
 export function WorkspacePage() @{
-  const loaderData = useLoaderData() as WorkspaceData
+  const loaderData = useLoaderData<WorkspaceData>()
   const [completed, setCompleted] = useState(0)
 
   <main class="page" data-route="/workspace" data-render-mode="client">

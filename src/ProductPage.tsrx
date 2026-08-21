@@ -28,7 +28,7 @@ export async function loader({ params }: LoaderArgs): Promise<
 
 export function ProductPage() @{
   const location = useLocation()
-  const loaderData = useLoaderData() as ProductLoaderData
+  const loaderData = useLoaderData<ProductLoaderData>()
   const [quantity, setQuantity] = useState(0)
 
   <main class="page" data-route={location.pathname} data-render-mode="server">

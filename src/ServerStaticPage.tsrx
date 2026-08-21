@@ -15,7 +15,7 @@ export async function loader({ request }: LoaderArgs): Promise<
 }
 
 export function ServerStaticPage() @{
-  const loaderData = useLoaderData() as ServerStaticData
+  const loaderData = useLoaderData<ServerStaticData>()
 
   <main class="page" data-route="/server-static" data-render-mode="server">
     <section class="content">

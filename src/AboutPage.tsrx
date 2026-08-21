@@ -13,7 +13,7 @@ export async function loader({ request }: LoaderArgs): Promise<AboutData> {
 }
 
 export function AboutPage() @{
-  const message = (useLoaderData() as AboutData).message
+  const { message } = useLoaderData<AboutData>()
 
   <main class="page" data-route="/about" data-render-mode="static">
     <section class="content">

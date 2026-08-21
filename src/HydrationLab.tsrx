@@ -18,7 +18,7 @@ export async function loader({ request }: LoaderArgs): Promise<
 }
 
 export function HydrationLab() @{
-  const loaderData = useLoaderData() as HydrationLabData
+  const loaderData = useLoaderData<HydrationLabData>()
 
   <main class="page" data-route="/hydration" data-render-mode="server">
     <section class="content content-wide">

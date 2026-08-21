@@ -18,7 +18,7 @@ export async function loader({ request }: LoaderArgs): Promise<
 }
 
 export function StaticInteractivePage() @{
-  const loaderData = useLoaderData() as StaticInteractiveData
+  const loaderData = useLoaderData<StaticInteractiveData>()
 
   <main class="page" data-route="/static-interactive" data-render-mode="static">
     <section class="content content-wide">

@@ -14,7 +14,7 @@ export async function loader({ request }: LoaderArgs): Promise<HomeLoaderData> {
 }
 
 export function HomePage() @{
-  const loaderData = useLoaderData() as HomeLoaderData
+  const loaderData = useLoaderData<HomeLoaderData>()
   const [count, setCount] = useState(0)
 
   <main class="page" data-route="/" data-render-mode="server">
