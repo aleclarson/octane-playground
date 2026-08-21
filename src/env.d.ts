@@ -5,8 +5,10 @@ declare module '*.tsrx' {
 
 declare module 'virtual:flamefront/remix-routes' {
 	import type { RouteObject } from '@octanejs/remix-router';
+	import type { NormalizedRoutingOptions } from 'flamefront';
 
 	export const routes: RouteObject[];
+	export const routing: NormalizedRoutingOptions;
 }
 
 declare module 'virtual:flamefront/server-routes' {
