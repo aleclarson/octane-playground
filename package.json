@@ -1,12 +1,13 @@
 {
   "name": "octane-playground",
-  "type": "module",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "ff dev",
     "build": "ff build",
     "preview": "ff preview",
-    "check:routes": "node scripts/check-routes.mjs"
+    "check:routes": "node scripts/check-routes.mjs",
+    "format": "oxlint --fix && prettier --write ."
   },
   "dependencies": {
     "@octanejs/remix-router": "0.1.36",
@@ -15,7 +16,11 @@
     "octane": "0.1.40"
   },
   "devDependencies": {
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "@tsrx/prettier-plugin": "^0.3.123",
     "@types/node": "26.1.1",
+    "oxc-tsrx": "0.5.0",
+    "prettier": "^3.9.6",
     "vite": "latest"
   }
 }
