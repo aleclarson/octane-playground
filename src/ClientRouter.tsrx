@@ -1,5 +1,5 @@
-import { RouterProvider } from '@octanejs/remix-router/dom';
+import { RouterProvider } from "@octanejs/remix-router/dom"
 
 export default function ClientRouter({ router }: { router: any }) @{
-	<RouterProvider router={router} />
+  <RouterProvider router={router} />
 }

@@ -16,16 +16,16 @@ The graph has one eager `AppShell` and one pathless `AppLayout`:
 
 The eight routes cover the public modes and hydration policies:
 
-| Path | Initial mode | Hydration proof |
-| --- | --- | --- |
-| `/` | `server` | Full shell and page hydration |
-| `/products/:productId` | `server` | Generated `interaction` boundary and dynamic loader params |
-| `/hydration` | `server` | Route-owned idle, visible, interaction, and media boundaries |
-| `/server-static` | `server` | `none`, leaving the page inert while shell and layout stay active |
-| `/static-interactive` | `static` | Build-time HTML with an authored deferred boundary |
-| `/workspace` | `client` | Shell and layout HTML with a pending route outlet |
-| `/workspace/settings` | `client` | Client loader data and layout state retention |
-| `/about` | `static` | Build-time HTML and `about/index.data.json` route data |
+| Path                   | Initial mode | Hydration proof                                                   |
+| ---------------------- | ------------ | ----------------------------------------------------------------- |
+| `/`                    | `server`     | Full shell and page hydration                                     |
+| `/products/:productId` | `server`     | Generated `interaction` boundary and dynamic loader params        |
+| `/hydration`           | `server`     | Route-owned idle, visible, interaction, and media boundaries      |
+| `/server-static`       | `server`     | `none`, leaving the page inert while shell and layout stay active |
+| `/static-interactive`  | `static`     | Build-time HTML with an authored deferred boundary                |
+| `/workspace`           | `client`     | Shell and layout HTML with a pending route outlet                 |
+| `/workspace/settings`  | `client`     | Client loader data and layout state retention                     |
+| `/about`               | `static`     | Build-time HTML and `about/index.data.json` route data            |
 
 Every `RouteHeader` item is a client-side router link. That includes the
 static `/about` and `/static-interactive` links and the `none`-hydrated
